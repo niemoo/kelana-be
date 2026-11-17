@@ -1,0 +1,14 @@
+# Build Results
+/bin/
+
+# Local Configuration
+.env
+
+# Coverage Reports
+*.out
+coverage.html
+
+# Editor and OS
+.idea/
+.vscode/
+.DS_Store/
