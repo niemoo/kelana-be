@@ -1,0 +1,55 @@
+# Konfigurasi golangci-lint v2. Cek validitasnya dengan: golangci-lint config verify
+version: "2"
+
+linters:
+  default: standard # errcheck, govet, ineffassign, staticcheck, unused
+  enable:
+    - bodyclose # resp.Body wajib ditutup
+    - depguard # aturan dependensi antar modul (tab 07 dokumen)
+    - errorlint # bandingkan error dengan errors.Is / errors.As
+    - gosec # pola kode yang rawan keamanan
+    - noctx # request dan koneksi keluar wajib membawa context
+    - revive # gaya Go idiomatis, termasuk komentar untuk identifier yang diekspor
+    - unconvert # konversi tipe yang tidak perlu
+  settings:
+    depguard:
+      rules:
+        platform:
+          files:
+            - "**/internal/platform/**"
+          deny:
+            - pkg: kelana/internal/identity
+              desc: platform tidak boleh meng-import modul bisnis
+            - pkg: kelana/internal/catalog
+              desc: platform tidak boleh meng-import modul bisnis
+            - pkg: kelana/internal/search
+              desc: platform tidak boleh meng-import modul bisnis
+            - pkg: kelana/internal/supplier
+              desc: platform tidak boleh meng-import modul bisnis
+            - pkg: kelana/internal/inventory
+              desc: platform tidak boleh meng-import modul bisnis
+            - pkg: kelana/internal/booking
+              desc: platform tidak boleh meng-import modul bisnis
+            - pkg: kelana/internal/payment
+              desc: platform tidak boleh meng-import modul bisnis
+            - pkg: kelana/internal/notification
+              desc: platform tidak boleh meng-import modul bisnis
+  exclusions:
+    # Jangan laporkan pola umum seperti `defer resp.Body.Close()` yang
+    # error-nya memang lazim diabaikan.
+    presets:
+      - std-error-handling
+    rules:
+      # Test memang memakai URL dari variabel dan port acak di localhost.
+      - path: _test\.go
+        linters:
+          - gosec
+
+formatters:
+  enable:
+    - gofmt
+    - goimports
+  settings:
+    goimports:
+      local-prefixes:
+        - kelana

@@ -1,0 +1,27 @@
+# Dependency untuk development lokal. Fase 0 cukup PostgreSQL; Redis,
+# Mailpit, dan lainnya ditambahkan di fase yang membutuhkannya.
+name: kelana
+
+services:
+  postgres:
+    image: postgres:18
+    environment:
+      POSTGRES_USER: kelana
+      POSTGRES_PASSWORD: kelana
+      POSTGRES_DB: kelana
+    ports:
+      # Hanya bisa diakses dari laptop ini, bukan dari jaringan.
+      - "127.0.0.1:5432:5432"
+    volumes:
+      # Image PostgreSQL 18 menyimpan data di /var/lib/postgresql/18/docker,
+      # jadi volume dipasang di /var/lib/postgresql (bukan .../data).
+      - pgdata:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U kelana -d kelana"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+      start_period: 10s
+
+volumes:
+  pgdata:

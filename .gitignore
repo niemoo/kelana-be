@@ -1,16 +1,17 @@
-# Build Results
+# Hasil build
 /bin/
 
-# Local Configuration
+# Konfigurasi lokal, bisa berisi rahasia (Server Key Midtrans di Fase 4)
 .env
 
-# Coverage Reports
+# Laporan coverage
 *.out
 coverage.html
 
-# Editor and OS
+# Editor dan OS
 .idea/
 .vscode/
-.DS_Store/
+.DS_Store
 
-.PANDUAN-SETUP.md
+# Panduan belajar lokal
+PANDUAN-SETUP.md
